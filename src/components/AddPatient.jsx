@@ -11,7 +11,7 @@ import Axios from 'axios';
 import apiAddress from '../config/apiAddress';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
-import EditEvent from './EditEvent';
+import EditEvent from './Event/EditEvent';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;

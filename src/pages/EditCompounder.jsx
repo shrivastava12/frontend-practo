@@ -17,6 +17,7 @@ const useStyles = makeStyles({
 const EditCompounder = () => {
 
     const classes = useStyles();
+    const user = JSON.parse(localStorage.getItem('user'))
 
     let {id} = useParams();
 
@@ -95,7 +96,23 @@ const EditCompounder = () => {
                 />
 
                 <Box>
-                    Permissions
+                    <h2>Permissions</h2>
+                    {
+                        user.permissions.map(item => (
+                            <FormControlLabel key={item => item}
+                            control={
+                                <Checkbox
+                                    checked={true}
+                                    onChange={() => {}}
+                                    name="checkedB"
+                                    color="primary"
+                                 />
+                                 }
+                             label={item}
+                        />
+                        ))
+                    }
+                   
                 </Box>
                 </CardContent>
             </Card>

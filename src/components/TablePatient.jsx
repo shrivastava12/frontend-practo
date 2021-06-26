@@ -12,7 +12,7 @@ import { CheckCircle, Edit } from '@material-ui/icons';
 import axios from 'axios';
 import { CircularProgress, Grid, IconButton, Tooltip } from '@material-ui/core';
 import apiAddress from '../config/apiAddress';
-
+import {toast} from 'react-toastify';
 const useStyles = makeStyles({
 	root: {
 		width: '100%',
@@ -33,18 +33,34 @@ export default function MyDataTable() {
 	const [patientColumns, setPatientColumns] = React.useState([])
 	const [patients, setPatients] = React.useState([])
 
-	const fetch = async () => {
+	const token = localStorage.getItem('token')
+	const user =  JSON.parse(localStorage.getItem('user'));
+	const fetch = () => {
 		setLoading(true);
-		const { data } = await axios.get(`${apiAddress}/patients`, { params: { page: page + 1, limit: rowsPerPage } })
+		const options = {
+			headers:{
+				'Content-Type':'application/json',
+				'authorizationtoken':`Bearer ${token}`
+			}
+		};
+		axios.get(`${apiAddress}/patients`,options, { params: { page: page + 1, limit: rowsPerPage } }).then((res) => {
+			if (res.data.results.length > 0) {
+				const excludeColumn = ['_id', "__v", "reports"]
+				const columns = Object.keys(data.data.results[0]).filter(col => (!excludeColumn.includes(col)))
+				setPatientColumns(columns)
+				setPatients(data.data.results)
+				setCount(data.data.count)
+			}
+			setLoading(false);
+		}).catch((err) => {
+			console.log(err.response.data.error)
+			if(err.response.data.error){
+				setLoading(false)
+				toast(err.response.data.error)
+			}
+		})
 
-		if (data.data.results.length > 0) {
-			const excludeColumn = ['_id', "__v", "reports"]
-			const columns = Object.keys(data.data.results[0]).filter(col => (!excludeColumn.includes(col)))
-			setPatientColumns(columns)
-			setPatients(data.data.results)
-			setCount(data.data.count)
-		}
-		setLoading(false);
+		
 	}
 
 	React.useEffect(() => {
@@ -62,7 +78,7 @@ export default function MyDataTable() {
 
 	const checkPatient = async (id, value) => {
 		console.log(id, value)
-		await axios.patch(`${apiAddress}/patients/${id}`, { status: value })
+		await axios.patch(`${apiAddress}/patients/${id}`, { status: value },options)
 		await fetch()
 	}
 
@@ -112,9 +128,12 @@ export default function MyDataTable() {
 											<TableCell >
 												<Grid container>
 													<Grid item xs={6}>
-														<IconButton>
-															<Edit />
-														</IconButton>
+														{
+															user.permissions.includes("edit_patient") ? (<IconButton>
+																<Edit />
+															</IconButton>) : null
+														}
+														
 													</Grid>
 													<Grid item xs={6}>
 														<Tooltip title="click to mark patient as completed">

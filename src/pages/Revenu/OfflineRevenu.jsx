@@ -2,15 +2,12 @@ import React from 'react';
 import {makeStyles,Card,Grid,Typography,CardContent,Avatar} from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-
 import PieChart from '../../components/PieChart';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-
 import IconButton from '@material-ui/core/IconButton';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';

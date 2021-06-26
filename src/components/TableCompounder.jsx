@@ -33,6 +33,7 @@ export default function MyDataTable() {
 	const [patientColumns, setPatientColumns] = React.useState([])
 	const [patients, setPatients] = React.useState([])
 
+	const user = JSON.parse(localStorage.getItem('user'));
 	const token = localStorage.getItem('token')
 	const options = {
 		headers:{
@@ -43,7 +44,7 @@ export default function MyDataTable() {
 
 	const fetch = async () => {
 		setLoading(true);
-		const { data } = await axios.get(`${apiAddress}/patients`, options,{ params: { page: page + 1, limit: rowsPerPage } })
+		const { data } = await axios.get(`${apiAddress}/compounders`, options,{ params: { page: page + 1, limit: rowsPerPage } })
 
 		if (data.data.results.length > 0) {
 			const excludeColumn = ['_id', "__v", "reports"]
@@ -70,7 +71,7 @@ export default function MyDataTable() {
 
 	const checkPatient = async (id, value) => {
 		console.log(id, value)
-		await axios.patch(`${apiAddress}/patients/${id}`, { status: value })
+		await axios.patch(`${apiAddress}/compounders/${id}`, { status: value })
 		await fetch()
 	}
 
@@ -120,9 +121,12 @@ export default function MyDataTable() {
 											<TableCell >
 												<Grid container>
 													<Grid item xs={6}>
-														<IconButton>
-															<Edit />
-														</IconButton>
+														{
+															user.permissions.includes('edit_compounder') ? (<IconButton>
+																<Edit />
+															</IconButton>) : null
+														}
+														
 													</Grid>
 													<Grid item xs={6}>
 														<Tooltip title="click to mark patient as completed">

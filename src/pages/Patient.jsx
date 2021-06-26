@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { fetchPatient } from '../redux/actions/patienAction';
 
 import TablePatient from '../components/TablePatient';
+import {ToastContainer} from 'react-toastify';
 const useStyles = makeStyles(theme => ({
     container:{
         maxHeight:440
@@ -24,7 +25,8 @@ const useStyles = makeStyles(theme => ({
 const Patient = ({fetchPatient,data}) => {
     const classes = useStyles();
   
-  
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user.permissions.includes('create_patient'))
    
 
   
@@ -46,6 +48,7 @@ const Patient = ({fetchPatient,data}) => {
 
     return(
         <div>
+            <ToastContainer/>
              <Toolbar>
              <TextField
                 className={classes.margin}
@@ -62,17 +65,21 @@ const Patient = ({fetchPatient,data}) => {
                 ),
                 }}
              />
-                <Link to="/patient/addPatient" className={classes.button}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    
-                    startIcon={<AddIcon />}
-                    onClick={handleNewPatient}
-                >
-                    Add Patient
-                </Button>
-                </Link>
+              {
+                  user.permissions.includes("create_patient") ? ( <Link to="/patient/addPatient" className={classes.button}>
+              
+                  <Button
+                      variant="contained"
+                      color="primary"
+                      
+                      startIcon={<AddIcon />}
+                      onClick={handleNewPatient}
+                  >
+                      Add Patient
+                  </Button>
+                  </Link>) :  null
+              }
+               
              </Toolbar>
           
 

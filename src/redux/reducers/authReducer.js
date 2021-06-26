@@ -14,7 +14,8 @@ export default function (state = initialState, action) {
     switch (type) {
         
         case LOGIN_SUCCESS:
-            localStorage.setItem('token', payload.token);           
+            localStorage.setItem('token', payload.token);  
+            localStorage.setItem('user',JSON.stringify(payload.doctor));         
             return {
                 ...state,
                 token: payload.token,

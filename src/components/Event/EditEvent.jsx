@@ -85,9 +85,9 @@ const EditEvent = (props) => {
 <br></br>
                
         </div>
-        <div style={{display:'flex'}}>
+        {/* <div style={{display:'flex'}}>
                      <Button onClick={() => {props.onClickBack()}}>Go Back</Button> 
-                </div>
+                </div> */}
         </>
     )
 

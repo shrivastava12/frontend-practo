@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles} from '@material-ui/core/styles';
-
-
+import {FormControl,Select,InputLabel,MenuItem} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -45,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
     marginTop:30,
   },
+  formControl: {
+    minWidth: 120,
+  },
 }));
 
 const AddCompounder =  () => {
@@ -58,15 +60,10 @@ const AddCompounder =  () => {
   const [phone,setPhone] = useState('');
   const [password,setPassword] = useState('');
   const [confirmPassword,setConfirmPassword] = useState('');
-  const [message,setMessage] = useState('hellow');
+  const [message,setMessage] = useState('');
+  const [clinic,setClinic] = useState('');
 
-  const onhandleSubmit = (e) => {
-        e.preventDefault();
-        if(password !== confirmPassword){
-           return  alert('password does not match');
-        }
-  }
- 
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const onSubmit =  (e) => {
     e.preventDefault();
@@ -76,24 +73,25 @@ const AddCompounder =  () => {
 
     const name = firstName + " " + lastName;
     const token = localStorage.getItem('token');
+    console.log(token)
       try{
           const options = {
           headers:{
             'Content-Type':'application/json',
-            'authorizationtoken':`Bearer ${token}`
+            'Authorizationtoken':`Bearer ${token}`
           }
         }
-         Axios.post(`${apiAddress}/compounders`,options,{
+         Axios.post(`${apiAddress}/compounders`,{
             name:name,
             email:email,
             phone:phone,
             password:password
-        }).then((res) => {
+        },options).then((res) => {
           if(res.status === 201){
               setMessage(`Compounder is created`)
           }
         }).catch((err) => {
-          setMessage('errr')
+          setMessage(err.response.data.error)
         })
       }catch(e){
           console.log(e)
@@ -114,7 +112,26 @@ const AddCompounder =  () => {
         <Typography style={{textAlign:'right',color:'black'}}>
         {message}
         </Typography>
-        <form onSubmit={e => onhandleSubmit(e)} className={classes.form} noValidate>
+        <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Select Clinic</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={clinic}
+              onChange={e => setClinic(e.target.value)}
+            >
+            {
+              user.clinics.map(item => (
+              
+                <MenuItem value={item._id}>{item._name}</MenuItem>
+              ))
+            }
+             
+              
+            </Select>
+          </FormControl>
+        <form onSubmit={e => onSubmit(e)} className={classes.form} noValidate>
+            
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

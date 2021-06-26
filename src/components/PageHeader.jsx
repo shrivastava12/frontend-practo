@@ -60,7 +60,7 @@ export default function PageHeader(props) {
                     startIcon={<AddIcon />}
                     onClick={e => handleOpen()}
                 >
-                    Add Patient
+                    Create Compounder
                 </Button>
                         {/* <Button color="secondary"  variant="contained" onClick={e => handleOpen()} >Create New</Button> */}
                     </div>

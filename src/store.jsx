@@ -9,7 +9,7 @@ const initialState =  {
     auth:{
         token:token,
         isAuthenticated:token ? true : false,
-        user:JSON.parse(localStorage.getItem('user'))
+        user: JSON.parse(localStorage.getItem('user'))
     }
 }
 

@@ -16,9 +16,11 @@ const useStyles = makeStyles(theme => ({
 
 const Compounder = () => {
 
-
+    const user = JSON.parse(localStorage.getItem('user'));
+   
 
     const [open, setOpen] = useState(false);
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -33,8 +35,11 @@ const Compounder = () => {
     const classes = useStyles();
     return (
         <>
-            <PageHeader title="Compounder" open={open} handleOpen={handleOpen} handleClose={handleClose} />
-            <TableCompounder/> 
+            <PageHeader title="Compounder" open={open}  handleOpen={handleOpen} handleClose={handleClose} />
+           {
+               user.permissions.includes('view_compunder') ? ( <TableCompounder/> 
+                ) : null
+           }
            
         </>
     )

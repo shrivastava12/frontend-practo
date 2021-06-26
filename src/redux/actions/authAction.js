@@ -1,7 +1,7 @@
 import { LOGIN_FAIL, LOGIN_SUCCESS,  REGISTER_FAIL, REGISTER_SUCCESS, SEND_OTP_SUCCESS,SEND_OTP_FAIL } from "./Type";
 import Axios from 'axios';
 import apiAddress from "../../config/apiAddress";
-import {toast} from 'react-toastify';
+
 
 // For doctor login
 export const loginUsingEmailorNumber =  (username,password) => async(dispatch) => {
@@ -18,7 +18,7 @@ export const loginUsingEmailorNumber =  (username,password) => async(dispatch) =
                    type:LOGIN_SUCCESS,
                    payload:res.data
                })
-               toast('login successfull')
+              
            }
         }).catch((err) => {
             dispatch({
